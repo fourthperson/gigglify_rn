@@ -1,0 +1,1 @@
+function SettingsPage(): React.JSX.Element {}

@@ -1,15 +1,15 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
-import { blackColor, boldFont, primaryColor, whiteColor } from '../../config/theme';
-import { splashDurationMillis } from '../../config/config';
-import { routeHome } from '../../nav/routes';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {blackColor, boldFont, primaryColor, whiteColor} from '../../config/theme';
+import {splashDurationMillis} from '../../config/config';
+import {routeHome} from '../../nav/routes';
 
 function SplashPage(): React.JSX.Element {
     const navigation = useNavigation();
 
     useEffect(() => {
-        setTimeout(()=> {
+        setTimeout(() => {
             navigation.replace(routeHome);
         }, splashDurationMillis);
     });
@@ -25,7 +25,7 @@ function SplashPage(): React.JSX.Element {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent:'center',
+        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: whiteColor,
     },
