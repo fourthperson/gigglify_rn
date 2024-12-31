@@ -4,6 +4,7 @@ import {BottomSheetView} from '@gorhom/bottom-sheet';
 import {blackColor, mediumFont, primaryColor, regularFont, whiteColor} from '../../config/theme.ts';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {categories} from '../../config/config.ts';
+import {getPrefItem, setPrefItem} from '../../prefs/local_pref.ts';
 
 function SettingsPage(): React.JSX.Element {
     function renderList() {
@@ -11,16 +12,17 @@ function SettingsPage(): React.JSX.Element {
             <>
                 {
                     categories.map(async (cat) => {
-                        // load checked status from storage
-                        let ischecked = false;
+                        // load checked status from preferences
+                        const val = await getPrefItem(cat);
+                        const ischecked = val === '1';
 
                         return OptionTile(
                             ischecked,
                             cat,
-                            (checked) => {
+                            async (checked) => {
                                 console.log(checked);
                                 // update storage using cat
-
+                                await setPrefItem(cat, checked ? '1' : '0');
                             }
                         );
                     })

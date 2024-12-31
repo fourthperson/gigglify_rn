@@ -25,7 +25,8 @@ import {
 } from '@gorhom/bottom-sheet';
 import SettingsPage from '../settings/settings.tsx';
 import {useRealm} from '@realm/react';
-import {SavedJoke} from '../../model/db/schema.ts';
+import {categories} from '../../config/config.ts';
+import {getPrefItem} from '../../prefs/local_pref.ts';
 
 function HomePage(): React.JSX.Element {
 
@@ -36,9 +37,23 @@ function HomePage(): React.JSX.Element {
 
     const settingsSheetModalRef = useRef<BottomSheetModal>(null);
 
-    async function loadRoute() {
+    async function loadRoute(): Promise<string | null> {
         try {
+            let route = '';
+            for (let i = 0; i < categories.length; i++) {
+                const val = await getPrefItem(categories[i]);
+                const selected = val !== null && val === '1';
+                if (selected) {
+                    if (i === 0) {
+                        return categories[0];
+                    } else {
+                        route += categories[i] + (i === categories.length - 1 ? '' : ',');
+                    }
+                }
+            }
+            return route === '' ? null : route;
         } catch (e) {
+            console.error(e);
         }
         return null;
     }
@@ -47,7 +62,7 @@ function HomePage(): React.JSX.Element {
         setIsLoading(true);
         try {
             const route = await loadRoute();
-            const response = await appAxios.get(route ?? 'Any');
+            const response = await appAxios.get(route ?? categories[0]);
             if (response.status === 200) {
                 if (response.data.error === true) {
                     return;
