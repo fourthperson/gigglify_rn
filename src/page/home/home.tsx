@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
     ActivityIndicator,
     Share,
@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Text,
     TouchableWithoutFeedback,
-    View
+    View,
 } from 'react-native';
 import {
     blackColor,
@@ -14,22 +14,40 @@ import {
     mediumFont,
     primaryColor,
     primaryDarkColor,
-    regularFont,
     whiteColor,
 } from '../../config/theme';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appAxios} from '../../..';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {
+    BottomSheetModal,
+    BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
+import SettingsPage from '../settings/settings.tsx';
+import {useRealm} from '@realm/react';
+import {SavedJoke} from '../../model/db/schema.ts';
 
 function HomePage(): React.JSX.Element {
 
     const [isLoading, setIsLoading] = useState(false);
     const [joke, setJoke] = useState({});
 
+    const realm = useRealm();
+
+    const settingsSheetModalRef = useRef<BottomSheetModal>(null);
+
+    async function loadRoute() {
+        try {
+        } catch (e) {
+        }
+        return null;
+    }
+
     async function loadJoke() {
         setIsLoading(true);
         try {
-            const response = await appAxios.get('Any');
+            const route = await loadRoute();
+            const response = await appAxios.get(route ?? 'Any');
             if (response.status === 200) {
                 if (response.data.error === true) {
                     return;
@@ -39,7 +57,9 @@ function HomePage(): React.JSX.Element {
                 if (j.type !== 'single') {
                     j.joke = j.setup + '\n\n' + j.delivery;
                 }
+
                 setJoke(j);
+                saveJoke();
             }
         } catch (e) {
             console.error(e);
@@ -47,19 +67,36 @@ function HomePage(): React.JSX.Element {
         setIsLoading(false);
     }
 
+    function saveJoke() {
+        realm.write(() => {
+            realm.create('joke', {
+                time: Date.now().toString(),
+                category: joke.category,
+                content: joke.joke,
+            });
+        });
+        const jokes = realm.objects('joke');
+        console.log(`${jokes.length} jokes saved`);
+    }
+
     function jokeEmpty(): Boolean {
+        // @ts-ignore
         return joke === {};
     }
 
     function settings() {
+        settingsSheetModalRef.current?.present();
     }
 
     function share() {
         try {
-            if(jokeEmpty()) return;
+            if (jokeEmpty()) {
+                return;
+            }
             Share.share({
+                // @ts-ignore
                 message: joke.joke,
-            });
+            }).then();
         } catch (e) {
             console.error(e);
         }
@@ -68,59 +105,77 @@ function HomePage(): React.JSX.Element {
     function history() {
     }
 
+//    useEffect(() => {
+//        async function work() {
+//            const all = await getJokes();
+//            if (Array.isArray(all)) {
+//                console.log('Has: ' + all.length + ' jokes saved');
+//            }
+//        }
+//
+//        work().then();
+//    }, []);
+
     useEffect(() => {
-        loadJoke();
+        loadJoke().then();
     }, []);
 
     return (
-        <View style={styles.container}>
-            <StatusBar backgroundColor={primaryDarkColor}/>
-            <SafeAreaView style={styles.container}>
-                {
-                    isLoading ?
-                        <View style={styles.centeredItems}>
-                            <ActivityIndicator
-                                size="large"
-                                color={primaryColor}/>
-                        </View>
-                        :
-                        <View style={styles.container}>
-                            <TouchableWithoutFeedback
-                                style={styles.container}
-                                onPress={loadJoke}>
-                                <View style={styles.centeredItems}>
-                                    <Text style={styles.categoryText}>
-                                        {
-                                            jokeEmpty() ? '' : joke.category
-                                        }
-                                    </Text>
-                                    <Text style={styles.jokeText}>
-                                        {
-                                            jokeEmpty() ? 'Tap the screen to load a joke' : joke.joke
-                                        }
+        <BottomSheetModalProvider>
+            <View style={styles.container}>
+                <StatusBar backgroundColor={primaryDarkColor}/>
+                <SafeAreaView style={styles.container}>
+                    {
+                        isLoading ?
+                            <View style={styles.centeredItems}>
+                                <ActivityIndicator
+                                    size="large"
+                                    color={primaryColor}/>
+                            </View>
+                            :
+                            <View style={styles.container}>
+                                <TouchableWithoutFeedback
+                                    style={styles.container}
+                                    onPress={loadJoke}>
+                                    <View style={styles.centeredItems}>
+                                        <Text style={styles.categoryText}>
+                                            {
+                                                // @ts-ignore
+                                                jokeEmpty() ? '' : joke.category
+                                            }
+                                        </Text>
+                                        <Text style={styles.jokeText}>
+                                            {
+                                                // @ts-ignore
+                                                jokeEmpty() ? 'Tap the screen to load a joke' : joke.joke
+                                            }
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <View style={styles.actionsContainer}>
+                                    <TouchableWithoutFeedback onPress={settings}>
+                                        <Icon name="settings-outline" size={28} color={blackColor}/>
+                                    </TouchableWithoutFeedback>
+                                    <TouchableWithoutFeedback onPress={share}>
+                                        <Icon name="share-social-outline" size={36} color={primaryColor}/>
+                                    </TouchableWithoutFeedback>
+                                    <TouchableWithoutFeedback onPress={history}>
+                                        <Icon name="time-outline" size={28} color={blackColor}/>
+                                    </TouchableWithoutFeedback>
+                                </View>
+                                <View style={styles.directionsContainer}>
+                                    <Text style={styles.directionsText}>
+                                        Press anywhere on the screen for another joke
                                     </Text>
                                 </View>
-                            </TouchableWithoutFeedback>
-                            <View style={styles.actionsContainer}>
-                                <TouchableWithoutFeedback onPress={settings}>
-                                    <Icon name="settings-outline" size={28} color={blackColor}/>
-                                </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback onPress={share}>
-                                    <Icon name="share-social-outline" size={36} color={primaryColor}/>
-                                </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback onPress={history}>
-                                    <Icon name="time-outline" size={28} color={blackColor}/>
-                                </TouchableWithoutFeedback>
                             </View>
-                            <View style={styles.directionsContainer}>
-                                <Text style={styles.directionsText}>
-                                    Press anywhere on the screen for another joke
-                                </Text>
-                            </View>
-                        </View>
-                }
-            </SafeAreaView>
-        </View>
+                    }
+                </SafeAreaView>
+            </View>
+            <BottomSheetModal ref={settingsSheetModalRef}>
+                <SettingsPage/>
+            </BottomSheetModal>
+        </BottomSheetModalProvider>
     );
 }
 
@@ -146,8 +201,8 @@ const styles = StyleSheet.create({
         fontFamily: mediumFont,
     },
     directionsText: {
-        fontFamily: regularFont,
-        fontSize: 14,
+        fontFamily: mediumFont,
+        fontSize: 12,
     },
     directionsContainer: {
         justifyContent: 'center',

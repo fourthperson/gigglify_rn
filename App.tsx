@@ -6,12 +6,16 @@
  */
 
 import React from 'react';
+import {RealmProvider} from '@realm/react';
 import GigglifyNavigator from './src/nav/navigator';
+import {SavedJoke} from './src/model/db/schema.ts';
 
 function GigglifyApp(): React.JSX.Element {
-  return (
-    <GigglifyNavigator/>
-  );
+    return (
+        <RealmProvider schema={[SavedJoke]}>
+            <GigglifyNavigator/>
+        </RealmProvider>
+    );
 }
 
 export default GigglifyApp;
