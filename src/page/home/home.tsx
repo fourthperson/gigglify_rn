@@ -17,7 +17,6 @@ import {
     mediumFont,
     primaryColor,
     primaryDarkColor,
-    whiteColor,
 } from '../../config/theme';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appAxios} from '../../..';
