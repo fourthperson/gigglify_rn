@@ -1,7 +1,10 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {
+    useEffect,
+    useState,
+    useRef,
+} from 'react';
 import {
     ActivityIndicator,
-    Share,
     StatusBar,
     StyleSheet,
     Text,
@@ -23,10 +26,11 @@ import {
     BottomSheetModal,
     BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
-import SettingsPage from '../settings/settings.tsx';
+import SettingsSheet from '../settings/settings.tsx';
 import {useRealm} from '@realm/react';
 import {categories} from '../../config/config.ts';
-import {getPrefItem} from '../../prefs/local_pref.ts';
+import HistoryShaet from '../history/history.tsx';
+import {loadRoute, shareText} from '../../util/utils.ts';
 
 function HomePage(): React.JSX.Element {
 
@@ -36,29 +40,11 @@ function HomePage(): React.JSX.Element {
     const realm = useRealm();
 
     const settingsSheetModalRef = useRef<BottomSheetModal>(null);
+    const historySheetModalRef = useRef<BottomSheetModal>(null);
 
-    async function loadRoute(): Promise<string | null> {
-        try {
-            let route = '';
-            for (let i = 0; i < categories.length; i++) {
-                const val = await getPrefItem(categories[i]);
-                const selected = val !== null && val === '1';
-                if (selected) {
-                    if (i === 0) {
-                        return categories[0];
-                    } else {
-                        route += categories[i] + (i === categories.length - 1 ? '' : ',');
-                    }
-                }
-            }
-            return route === '' ? null : route;
-        } catch (e) {
-            console.error(e);
-        }
-        return null;
-    }
-
-    async function loadJoke() {
+    async function loadJoke(): Promise<void> {
+        settingsSheetModalRef.current?.close();
+        historySheetModalRef.current?.close();
         setIsLoading(true);
         try {
             const route = await loadRoute();
@@ -83,15 +69,23 @@ function HomePage(): React.JSX.Element {
     }
 
     function saveJoke() {
-        realm.write(() => {
-            realm.create('joke', {
-                time: Date.now().toString(),
-                category: joke.category,
-                content: joke.joke,
+        try {
+            realm.write(() => {
+                try {
+                    realm.create('joke', {
+                        time: Date.now().toString(),
+                        // @ts-ignore
+                        category: joke.category,
+                        // @ts-ignore
+                        content: joke.joke,
+                    });
+                } catch (e) {
+                    console.error(e);
+                }
             });
-        });
-        const jokes = realm.objects('joke');
-        console.log(`${jokes.length} jokes saved`);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     function jokeEmpty(): Boolean {
@@ -99,37 +93,21 @@ function HomePage(): React.JSX.Element {
         return joke === {};
     }
 
+    function share() {
+        if (jokeEmpty()) {
+            return;
+        }
+        // @ts-ignore
+        shareText(joke.joke);
+    }
+
     function settings() {
         settingsSheetModalRef.current?.present();
     }
 
-    function share() {
-        try {
-            if (jokeEmpty()) {
-                return;
-            }
-            Share.share({
-                // @ts-ignore
-                message: joke.joke,
-            }).then();
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
     function history() {
+        historySheetModalRef.current?.present();
     }
-
-//    useEffect(() => {
-//        async function work() {
-//            const all = await getJokes();
-//            if (Array.isArray(all)) {
-//                console.log('Has: ' + all.length + ' jokes saved');
-//            }
-//        }
-//
-//        work().then();
-//    }, []);
 
     useEffect(() => {
         loadJoke().then();
@@ -187,8 +165,14 @@ function HomePage(): React.JSX.Element {
                     }
                 </SafeAreaView>
             </View>
-            <BottomSheetModal ref={settingsSheetModalRef}>
-                <SettingsPage/>
+            <BottomSheetModal
+                ref={settingsSheetModalRef}>
+                <SettingsSheet/>
+            </BottomSheetModal>
+            <BottomSheetModal
+                ref={historySheetModalRef}
+                snapPoints={['50%']}>
+                <HistoryShaet/>
             </BottomSheetModal>
         </BottomSheetModalProvider>
     );
@@ -197,7 +181,7 @@ function HomePage(): React.JSX.Element {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: whiteColor,
+        backgroundColor: '#eee4fb',
     },
     centeredItems: {
         flex: 1,

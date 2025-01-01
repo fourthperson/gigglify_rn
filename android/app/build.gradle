@@ -71,6 +71,7 @@ def enableProguardInReleaseBuilds = false
  * this variant is about 6MiB larger per architecture than default.
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
+def enableSeparateBuildPerCPUArchitecture = true
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -78,12 +79,21 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.gigglify_rn"
+
     defaultConfig {
         applicationId "com.gigglify_rn"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+    }
+    splits {
+        abi {
+            reset()
+            enable enableSeparateBuildPerCPUArchitecture
+            universalApk true  // If true, also generate a universal APK
+            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+        }
     }
     signingConfigs {
         debug {

@@ -1,7 +1,17 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
-import {blackColor, boldFont, primaryColor, whiteColor} from '../../config/theme';
+import {
+    StatusBar,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native';
+import {
+    blackColor,
+    boldFont,
+    primaryColor,
+    whiteColor
+} from '../../config/theme';
 import {splashDurationMillis} from '../../config/config';
 import {routeHome} from '../../nav/routes';
 
