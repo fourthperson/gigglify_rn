@@ -2,28 +2,35 @@ import React from 'react';
 import {
     StyleSheet,
     Text,
-    View
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import {BottomSheetView} from '@gorhom/bottom-sheet';
+import {
+    BottomSheetView,
+    useBottomSheetModal,
+} from '@gorhom/bottom-sheet';
 import {
     blackColor,
     mediumFont,
     primaryColor,
     regularFont,
-    whiteColor
+    whiteColor,
 } from '../../config/theme.ts';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {
     categories,
     valDisabled,
-    valEnabled
+    valEnabled,
 } from '../../config/config.ts';
 import {
     getPrefItem,
-    setPrefItem
+    setPrefItem,
 } from '../../prefs/local_pref.ts';
 
 function SettingsSheet(): React.JSX.Element {
+
+    const {dismiss} = useBottomSheetModal();
+
     function renderList() {
         return (
             <>
@@ -62,6 +69,10 @@ function SettingsSheet(): React.JSX.Element {
                 renderList()
             }
             <View style={styles.spacer}/>
+            <TouchableOpacity style={styles.button} onPress={(_) => dismiss()}>
+                <Text style={styles.buttonLabel}>Save</Text>
+            </TouchableOpacity>
+            <View style={styles.spacer}/>
         </BottomSheetView>
     );
 }
@@ -71,9 +82,7 @@ function OptionTile(isChecked: boolean, label: string, onChecked: (b: boolean) =
         <View style={styles.optionContainer}>
             <BouncyCheckbox
                 isChecked={isChecked}
-                onPress={(checked) => {
-                    onChecked(checked);
-                }}
+                onPress={(checked) => onChecked(checked)}
                 textComponent={
                     <Text style={styles.optionLabel}>{label}</Text>
                 }
@@ -93,6 +102,9 @@ const styles = StyleSheet.create({
         paddingEnd: 24,
         paddingBottom: 16,
         paddingTop: 8,
+    },
+    background: {
+        color: blackColor,
     },
     titleStyle: {
         fontSize: 20,
@@ -115,6 +127,20 @@ const styles = StyleSheet.create({
     },
     spacer: {
         height: 10,
+    },
+    button: {
+        alignSelf: 'center',
+        backgroundColor: primaryColor,
+        borderRadius: 8,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingStart: 32,
+        paddingEnd: 32,
+    },
+    buttonLabel: {
+        color: whiteColor,
+        fontFamily: mediumFont,
+        fontSize: 16,
     },
 });
 

@@ -22,6 +22,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {appAxios} from '../../..';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
+    BottomSheetBackdrop,
+    BottomSheetBackdropProps,
     BottomSheetModal,
     BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
@@ -30,6 +32,7 @@ import {useRealm} from '@realm/react';
 import {categories} from '../../config/config.ts';
 import HistoryShaet from '../history/history.tsx';
 import {loadRoute, shareText} from '../../util/utils.ts';
+import {SavedJoke} from '../../model/db/schema.ts';
 
 function HomePage(): React.JSX.Element {
 
@@ -44,6 +47,7 @@ function HomePage(): React.JSX.Element {
     async function loadJoke(): Promise<void> {
         settingsSheetModalRef.current?.close();
         historySheetModalRef.current?.close();
+
         setIsLoading(true);
         try {
             const route = await loadRoute();
@@ -69,9 +73,13 @@ function HomePage(): React.JSX.Element {
 
     function saveJoke() {
         try {
+            // @ts-ignore
+            if (!joke.category || !joke.joke) {
+                return;
+            }
             realm.write(() => {
                 try {
-                    realm.create('joke', {
+                    realm.create(SavedJoke.schema.name, {
                         time: Date.now().toString(),
                         // @ts-ignore
                         category: joke.category,
@@ -165,16 +173,30 @@ function HomePage(): React.JSX.Element {
                 </SafeAreaView>
             </View>
             <BottomSheetModal
-                ref={settingsSheetModalRef}>
+                ref={settingsSheetModalRef}
+                backdropComponent={(props) => Backdrop(props)}>
                 <SettingsSheet/>
             </BottomSheetModal>
             <BottomSheetModal
                 ref={historySheetModalRef}
-                snapPoints={['50%']}>
+                snapPoints={['50%']}
+                backdropComponent={Backdrop}>
                 <HistoryShaet/>
             </BottomSheetModal>
         </BottomSheetModalProvider>
     );
+}
+
+function Backdrop(props: BottomSheetBackdropProps): React.JSX.Element {
+    return <BottomSheetBackdrop
+        style={styles.backdropStyle}
+        {...{
+            ...props,
+            appearsOnIndex: 0,
+            disappearsOnIndex: -1,
+            opacity: 0.5,
+        }}
+    />;
 }
 
 const styles = StyleSheet.create({
@@ -215,6 +237,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingStart: 30,
         paddingEnd: 30,
+    },
+    backdropStyle: {
+        backgroundColor: blackColor,
     },
 });
 

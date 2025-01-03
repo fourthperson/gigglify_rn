@@ -3,8 +3,14 @@ import {
     getLocales,
     uses24HourClock,
 } from 'react-native-localize';
-import {getPrefItem, setPrefItem} from '../prefs/local_pref.ts';
-import {categories, keyDateFormat} from '../config/config.ts';
+import {
+    getPrefItem,
+    setPrefItem,
+} from '../prefs/local_pref.ts';
+import {
+    categories,
+    keyDateFormat,
+} from '../config/config.ts';
 
 export function shareText(text: string) {
     try {
@@ -50,9 +56,9 @@ export async function readDateFormat() {
             return;
         }
 
-        const dtFm = getDateFormatPattern(locale).toUpperCase();
+        const dateFormat = getDateFormatPattern(locale).toUpperCase();
 
-        await setPrefItem(keyDateFormat, `${dtFm} ${timeFormat}`);
+        await setPrefItem(keyDateFormat, `${dateFormat} ${timeFormat}`);
     } catch (e) {
         console.error(e);
     }
