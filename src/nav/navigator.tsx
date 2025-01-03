@@ -2,12 +2,14 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {routeHome, routeSplash} from './routes';
 import SplashPage from '../page/splash/splash';
 import HomePage from '../page/home/home';
 import {StyleSheet} from 'react-native';
 
 const Stack = createNativeStackNavigator();
+
+export const routeSplash = 'splash';
+export const routeHome = 'home';
 
 function GigglifyNavigator() {
     return (

@@ -4,16 +4,16 @@ import {
     StatusBar,
     StyleSheet,
     Text,
-    View
+    View,
 } from 'react-native';
 import {
     blackColor,
     boldFont,
     primaryColor,
-    whiteColor
+    whiteColor,
 } from '../../config/theme';
 import {splashDurationMillis} from '../../config/config';
-import {routeHome} from '../../nav/routes';
+import {routeHome} from '../../nav/navigator.tsx';
 
 function SplashPage(): React.JSX.Element {
     const navigation = useNavigation();
