@@ -1,0 +1,15 @@
+{
+    "app_name": "Gigglify",
+    "usage_description": "Press anywhere on the screen for another joke",
+    "preferences": "Preferences",
+    "allowed_categories": "Allowed categories",
+    "category_any": "Any",
+    "category_dark": "Dark",
+    "category_pun": "Pun",
+    "category_spooky": "Spooky",
+    "category_christmas": "Christmas",
+    "category_programming": "Programming",
+    "category_misc": "Miscellaneous",
+    "save": "Save",
+    "history": "History"
+}

@@ -18,7 +18,6 @@ import {
 } from '../../config/theme.ts';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {
-    categories,
     valDisabled,
     valEnabled,
 } from '../../config/config.ts';
@@ -26,12 +25,25 @@ import {
     getPrefItem,
     setPrefItem,
 } from '../../prefs/local_pref.ts';
+import {useTranslation} from 'react-i18next';
 
 function SettingsSheet(): React.JSX.Element {
 
+    const {t} = useTranslation();
+
     const {dismiss} = useBottomSheetModal();
 
-    function renderList() {
+    const categories = [
+        t('category_any'),
+        t('category_dark'),
+        t('category_pun'),
+        t('category_spooky'),
+        t('category_christmas'),
+        t('category_programming'),
+        t('category_misc'),
+    ];
+
+    function categoriesList() {
         return (
             <>
                 {
@@ -62,15 +74,15 @@ function SettingsSheet(): React.JSX.Element {
     return (
         <BottomSheetView
             style={styles.contentContainer}>
-            <Text style={styles.titleStyle}>Preferences</Text>
-            <Text style={styles.optionLabel}>Allowed categories</Text>
+            <Text style={styles.titleStyle}>{t('preferences')}</Text>
+            <Text style={styles.optionLabel}>{t('allowed_categories')}</Text>
             <View style={styles.spacer}/>
             {
-                renderList()
+                categoriesList()
             }
             <View style={styles.spacer}/>
             <TouchableOpacity style={styles.button} onPress={(_) => dismiss()}>
-                <Text style={styles.buttonLabel}>Save</Text>
+                <Text style={styles.buttonLabel}>{t('save')}</Text>
             </TouchableOpacity>
             <View style={styles.spacer}/>
         </BottomSheetView>

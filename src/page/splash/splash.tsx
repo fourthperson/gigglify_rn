@@ -14,9 +14,12 @@ import {
 } from '../../config/theme';
 import {splashDurationMillis} from '../../config/config';
 import {routeHome} from '../../nav/navigator.tsx';
+import {useTranslation} from 'react-i18next';
 
 function SplashPage(): React.JSX.Element {
     const navigation = useNavigation();
+
+    const {t} = useTranslation();
 
     useEffect(() => {
         setTimeout(() => {
@@ -27,7 +30,7 @@ function SplashPage(): React.JSX.Element {
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={primaryColor}/>
-            <Text style={styles.logoText}>Gigglify</Text>
+            <Text style={styles.logoText}>{t('app_name')}</Text>
         </View>
     );
 }

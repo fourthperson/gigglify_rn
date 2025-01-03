@@ -5,6 +5,7 @@ import React, {
 } from 'react';
 import {
     ActivityIndicator,
+    Platform,
     StatusBar,
     StyleSheet,
     Text,
@@ -31,10 +32,16 @@ import SettingsSheet from '../settings/settings.tsx';
 import {useRealm} from '@realm/react';
 import {categories} from '../../config/config.ts';
 import HistoryShaet from '../history/history.tsx';
-import {loadRoute, shareText} from '../../util/utils.ts';
+import {
+    loadRoute,
+    shareText,
+} from '../../util/utils.ts';
 import {SavedJoke} from '../../model/db/schema.ts';
+import {useTranslation} from 'react-i18next';
 
 function HomePage(): React.JSX.Element {
+
+    const {t} = useTranslation();
 
     const [isLoading, setIsLoading] = useState(false);
     const [joke, setJoke] = useState({});
@@ -129,7 +136,7 @@ function HomePage(): React.JSX.Element {
                         isLoading ?
                             <View style={styles.centeredItems}>
                                 <ActivityIndicator
-                                    size="large"
+                                    size={Platform.OS === 'ios' ? 'small' : 'large'}
                                     color={primaryColor}/>
                             </View>
                             :
@@ -165,7 +172,9 @@ function HomePage(): React.JSX.Element {
                                 </View>
                                 <View style={styles.directionsContainer}>
                                     <Text style={styles.directionsText}>
-                                        Press anywhere on the screen for another joke
+                                        {
+                                            t('usage_description')
+                                        }
                                     </Text>
                                 </View>
                             </View>
@@ -174,20 +183,20 @@ function HomePage(): React.JSX.Element {
             </View>
             <BottomSheetModal
                 ref={settingsSheetModalRef}
-                backdropComponent={(props) => Backdrop(props)}>
+                backdropComponent={(props) => ModalBackdrop(props)}>
                 <SettingsSheet/>
             </BottomSheetModal>
             <BottomSheetModal
                 ref={historySheetModalRef}
                 snapPoints={['50%']}
-                backdropComponent={Backdrop}>
+                backdropComponent={ModalBackdrop}>
                 <HistoryShaet/>
             </BottomSheetModal>
         </BottomSheetModalProvider>
     );
 }
 
-function Backdrop(props: BottomSheetBackdropProps): React.JSX.Element {
+function ModalBackdrop(props: BottomSheetBackdropProps): React.JSX.Element {
     return <BottomSheetBackdrop
         style={styles.backdropStyle}
         {...{

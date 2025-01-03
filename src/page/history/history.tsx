@@ -20,8 +20,11 @@ import dayjs from 'dayjs';
 import {getPrefItem} from '../../prefs/local_pref.ts';
 import {keyDateFormat} from '../../config/config.ts';
 import {SavedJoke} from '../../model/db/schema.ts';
+import {useTranslation} from 'react-i18next';
 
 function HistoryShaet(): React.JSX.Element {
+
+    const {t} = useTranslation();
 
     const [jokes, setJokes] = useState([]);
     const [dateFormat, setDateFormat] = useState('DD MMM YYYY h:mm A');
@@ -80,7 +83,7 @@ function HistoryShaet(): React.JSX.Element {
 
     return (
         <BottomSheetScrollView style={styles.contentContainer}>
-            <Text style={styles.titleStyle}>History</Text>
+            <Text style={styles.titleStyle}>{t('history')}</Text>
             {
                 historyList()
             }
