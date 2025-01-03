@@ -51,9 +51,8 @@ function HistoryShaet(): React.JSX.Element {
         let array = [];
 
         jokesQuery.map((item: SavedJoke) => {
-            const dayJs = dayjs(parseInt(item.time.toString(), 10));
             array.push({
-                time: dayJs.format(dateFormat),
+                time: item.time,
                 category: item.category,
                 content: item.content,
             });
@@ -62,7 +61,7 @@ function HistoryShaet(): React.JSX.Element {
         setJokes(array);
     }
 
-    function renderList(): React.JSX.Element {
+    function historyList(): React.JSX.Element {
         return (
             <>
                 {
@@ -71,6 +70,7 @@ function HistoryShaet(): React.JSX.Element {
                             j.content,
                             j.category,
                             j.time,
+                            dateFormat,
                         );
                     })
                 }
@@ -82,13 +82,14 @@ function HistoryShaet(): React.JSX.Element {
         <BottomSheetScrollView style={styles.contentContainer}>
             <Text style={styles.titleStyle}>History</Text>
             {
-                renderList()
+                historyList()
             }
         </BottomSheetScrollView>
     );
 }
 
-function ListItem(joke: string, category: string, date: string): React.JSX.Element {
+function ListItem(joke: string, category: string, date: string, format: string): React.JSX.Element {
+    const dayJs = dayjs(parseInt(date, 10));
     return (
         <TouchableOpacity
             key={date}
@@ -99,7 +100,7 @@ function ListItem(joke: string, category: string, date: string): React.JSX.Eleme
                 <Text style={styles.jokeText}>{joke}</Text>
                 <View style={styles.subRow}>
                     <Text style={styles.subText}>{category}</Text>
-                    <Text style={styles.subText}>{date}</Text>
+                    <Text style={styles.subText}>{dayJs.format(format)}</Text>
                 </View>
             </View>
         </TouchableOpacity>
