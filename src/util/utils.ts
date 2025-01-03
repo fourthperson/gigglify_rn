@@ -22,8 +22,8 @@ export function shareText(text: string) {
     }
 }
 
-export const getDateFormatPattern = (locale: string) => {
-    const getPatternForPart = (part: Intl.DateTimeFormatPart) => {
+export function getDateFormatPattern(locale: string): string {
+    function getPatternForPart(part: Intl.DateTimeFormatPart): string {
         switch (part.type) {
             case 'day':
                 return 'd'.repeat(part.value.length);
@@ -37,12 +37,13 @@ export const getDateFormatPattern = (locale: string) => {
                 console.log('Unsupported date part', part);
                 return '';
         }
-    };
+    }
 
     return new Intl.DateTimeFormat(locale).formatToParts(new Date('2021-01-01'))
         .map(getPatternForPart)
         .join('');
-};
+}
+
 
 export async function readDateFormat() {
     try {
