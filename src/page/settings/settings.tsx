@@ -43,7 +43,7 @@ function SettingsSheet(): React.JSX.Element {
         t('category_misc'),
     ];
 
-    function categoriesList() {
+    function categoriesList(): React.JSX.Element {
         return (
             <>
                 {
