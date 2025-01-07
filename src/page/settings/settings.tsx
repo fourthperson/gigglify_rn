@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+    useEffect,
+    useState,
+} from 'react';
 import {
     StyleSheet,
     Text,
@@ -44,14 +47,38 @@ function SettingsSheet(): React.JSX.Element {
         t('category_misc'),
     ];
 
-    async function handleOptionCheck(route: string, checked: boolean): Promise<void> {
-        await setPrefItem(route, checked ? valEnabled : valDisabled);
-        if (route === routes[0] && checked) {
+    const [checked, setChecked] = useState([true, false, false, false, false, false, false]);
+
+    useEffect(() => {
+        loadCheckedState().then();
+    }, []);
+
+    async function loadCheckedState() {
+        let checkedArray: Array<boolean> = [];
+
+        for (let i = 0; i < routes.length; i++) {
+            checkedArray[i] = await getPrefItem(routes[i]) === valEnabled;
+        }
+
+        setChecked(checkedArray);
+    }
+
+    async function saveChanges() {
+        let checkedArray: Array<boolean> = [];
+        if (checked[0]) {
+            // any selected, deselect all others
+            checkedArray = checked;
             for (let i = 1; i < routes.length; i++) {
-                await setPrefItem(routes[i], valDisabled);
+                checkedArray[i] = false;
             }
         } else {
-            await setPrefItem(routes[0], valDisabled);
+            // others selected, deselect any
+            checkedArray = checked;
+            checkedArray[0] = false;
+        }
+        setChecked(checkedArray);
+        for (let i = 0; i < routes.length; i++) {
+            await setPrefItem(routes[i], checked[i] ? valEnabled : valDisabled);
         }
     }
 
@@ -59,15 +86,16 @@ function SettingsSheet(): React.JSX.Element {
         return (
             <>
                 {
-                    routes.map(async (route, index) => {
-                        const allowed = await getPrefItem(route) === valEnabled;
-
+                    routes.map(async (_, index) => {
                         return (
                             <OptionTile
-                                isChecked={allowed}
+                                isChecked={checked[index]}
                                 label={categories[index]}
-                                onChecked={async (checked: boolean) => {
-                                    await handleOptionCheck(route, checked);
+                                onChecked={async (c: boolean) => {
+                                    let a = checked;
+                                    a[index] = c;
+                                    setChecked(a);
+                                    await saveChanges();
                                 }}
                             />
                         );
