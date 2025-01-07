@@ -8,7 +8,7 @@ import {
     setPrefItem,
 } from '../prefs/local_pref.ts';
 import {
-    categories,
+    routes,
     keyDateFormat,
 } from '../config/config.ts';
 
@@ -65,26 +65,26 @@ export async function readDateFormat() {
     }
 }
 
-export async function loadRoute(): Promise<string | null> {
+export async function loadRoute(): Promise<string> {
     try {
         let route = '';
-        for (let i = 0; i < categories.length; i++) {
-            const val = await getPrefItem(categories[i]);
+        for (let i = 0; i < routes.length; i++) {
+            const val = await getPrefItem(routes[i]);
             const selected = val !== null && val === '1';
             if (selected) {
                 if (i === 0) {
-                    return categories[0];
+                    return routes[0];
                 } else {
-                    route += categories[i] + ',';
+                    route += routes[i] + ',';
                 }
             }
         }
-        if (route !== categories[0]) {
+        if (route !== routes[0]) {
             route = route.substring(0, route.length - 1);
         }
-        return route === '' ? null : route;
+        return route === '' ? routes[0] : route;
     } catch (e) {
         console.error(e);
     }
-    return null;
+    return routes[0];
 }

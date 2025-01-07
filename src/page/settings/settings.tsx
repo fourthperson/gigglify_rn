@@ -18,6 +18,7 @@ import {
 } from '../../config/theme.ts';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {
+    routes,
     valDisabled,
     valEnabled,
 } from '../../config/config.ts';
@@ -43,27 +44,32 @@ function SettingsSheet(): React.JSX.Element {
         t('category_misc'),
     ];
 
+    async function handleOptionCheck(route: string, checked: boolean): Promise<void> {
+        await setPrefItem(route, checked ? valEnabled : valDisabled);
+        if (route === routes[0] && checked) {
+            for (let i = 1; i < routes.length; i++) {
+                await setPrefItem(routes[i], valDisabled);
+            }
+        } else {
+            await setPrefItem(routes[0], valDisabled);
+        }
+    }
+
     function categoriesList(): React.JSX.Element {
         return (
             <>
                 {
-                    categories.map(async (cat) => {
-                        // load checked status from preferences
-                        const ischecked = await getPrefItem(cat) === valEnabled;
+                    routes.map(async (route, index) => {
+                        const allowed = await getPrefItem(route) === valEnabled;
 
-                        return OptionTile(
-                            ischecked,
-                            cat,
-                            async (checked) => {
-                                // update storage using cat
-                                await setPrefItem(cat, checked ? valEnabled : valDisabled);
-                                if (cat === categories[0] && checked) {
-                                    for (let i = 1; i <= categories.length; i++) {
-                                        const c: string = categories[i];
-                                        await setPrefItem(c, '0');
-                                    }
-                                }
-                            }
+                        return (
+                            <OptionTile
+                                isChecked={allowed}
+                                label={categories[index]}
+                                onChecked={async (checked: boolean) => {
+                                    await handleOptionCheck(route, checked);
+                                }}
+                            />
                         );
                     })
                 }
@@ -82,14 +88,20 @@ function SettingsSheet(): React.JSX.Element {
             }
             <View style={styles.spacer}/>
             <TouchableOpacity style={styles.button} onPress={(_) => dismiss()}>
-                <Text style={styles.buttonLabel}>{t('save')}</Text>
+                <Text style={styles.buttonLabel}>{t('done')}</Text>
             </TouchableOpacity>
             <View style={styles.spacer}/>
         </BottomSheetView>
     );
 }
 
-function OptionTile(isChecked: boolean, label: string, onChecked: (b: boolean) => void): React.JSX.Element {
+interface OptionTileProps {
+    isChecked: boolean;
+    label: string;
+    onChecked: (b: boolean) => void
+}
+
+function OptionTile({isChecked, label, onChecked}: OptionTileProps): React.JSX.Element {
     return (
         <View style={styles.optionContainer}>
             <BouncyCheckbox

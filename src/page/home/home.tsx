@@ -30,7 +30,6 @@ import {
 } from '@gorhom/bottom-sheet';
 import SettingsSheet from '../settings/settings.tsx';
 import {useRealm} from '@realm/react';
-import {categories} from '../../config/config.ts';
 import HistoryShaet from '../history/history.tsx';
 import {
     loadRoute,
@@ -57,8 +56,7 @@ function HomePage(): React.JSX.Element {
 
         setIsLoading(true);
         try {
-            const route = await loadRoute();
-            const response = await appAxios.get(route ?? categories[0]);
+            const response = await appAxios.get(await loadRoute());
             if (response.status === 200) {
                 if (response.data.error === true) {
                     return;
@@ -154,7 +152,7 @@ function HomePage(): React.JSX.Element {
                                         <Text style={styles.jokeText}>
                                             {
                                                 // @ts-ignore
-                                                jokeEmpty() ? 'Tap the screen to load a joke' : joke.joke
+                                                jokeEmpty() ? t('usage_description1') : joke.joke
                                             }
                                         </Text>
                                     </View>

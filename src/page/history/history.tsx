@@ -69,6 +69,7 @@ function HistoryShaet(): React.JSX.Element {
             <>
                 {
                     jokes.map((j) => {
+                        // @ts-ignore
                         return ListItem(
                             j.content,
                             j.category,
