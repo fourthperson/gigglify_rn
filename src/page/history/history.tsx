@@ -51,7 +51,7 @@ function HistoryShaet(): React.JSX.Element {
     }, [dateFormat]);
 
     function loadJokes() {
-        let array = [];
+        let array: Array<{}> = [];
 
         jokesQuery.map((item: SavedJoke) => {
             array.push({
@@ -69,7 +69,6 @@ function HistoryShaet(): React.JSX.Element {
             <>
                 {
                     jokes.map((j) => {
-                        // @ts-ignore
                         return ListItem(
                             j.content,
                             j.category,

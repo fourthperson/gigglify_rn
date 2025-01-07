@@ -9,7 +9,7 @@ import {
     StatusBar,
     StyleSheet,
     Text,
-    TouchableWithoutFeedback,
+    TouchableOpacity,
     View,
 } from 'react-native';
 import {
@@ -139,7 +139,7 @@ function HomePage(): React.JSX.Element {
                             </View>
                             :
                             <View style={styles.container}>
-                                <TouchableWithoutFeedback
+                                <TouchableOpacity
                                     style={styles.container}
                                     onPress={loadJoke}>
                                     <View style={styles.centeredItems}>
@@ -156,17 +156,17 @@ function HomePage(): React.JSX.Element {
                                             }
                                         </Text>
                                     </View>
-                                </TouchableWithoutFeedback>
+                                </TouchableOpacity>
                                 <View style={styles.actionsContainer}>
-                                    <TouchableWithoutFeedback onPress={settings}>
+                                    <TouchableOpacity onPress={settings}>
                                         <Icon name="settings-outline" size={28} color={blackColor}/>
-                                    </TouchableWithoutFeedback>
-                                    <TouchableWithoutFeedback onPress={share}>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={share}>
                                         <Icon name="share-social-outline" size={36} color={primaryColor}/>
-                                    </TouchableWithoutFeedback>
-                                    <TouchableWithoutFeedback onPress={history}>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={history}>
                                         <Icon name="time-outline" size={28} color={blackColor}/>
-                                    </TouchableWithoutFeedback>
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.directionsContainer}>
                                     <Text style={styles.directionsText}>
