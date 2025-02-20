@@ -8,17 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* gigglify_rnTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* gigglify_rnTests.m */; };
+		03DDA3EBDF4F4C26827A59C0 /* CooperHewitt-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A088993F3EA45E68533519A /* CooperHewitt-Medium.otf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-gigglify_rn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-gigglify_rn.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1C795FF332CE4BF1A9D504C0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		2E77F5014FD24D96BBF4CDDC /* CooperHewitt-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C046668EF41EC8CE01BEA /* CooperHewitt-Bold.otf */; };
 		7699B88040F8A987B510C191 /* libPods-gigglify_rn-gigglify_rnTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-gigglify_rn-gigglify_rnTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		2E77F5014FD24D96BBF4CDDC /* CooperHewitt-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C046668EF41EC8CE01BEA /* CooperHewitt-Bold.otf */; };
-		9C1C9EFAA08C4F2AB6FFB2FA /* CooperHewitt-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 477EA29782F74B44939367E0 /* CooperHewitt-Book.otf */; };
 		990306833368485D834451A0 /* CooperHewitt-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F8E077266224B72814F3DA9 /* CooperHewitt-Light.otf */; };
-		03DDA3EBDF4F4C26827A59C0 /* CooperHewitt-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A088993F3EA45E68533519A /* CooperHewitt-Medium.otf */; };
+		9C1C9EFAA08C4F2AB6FFB2FA /* CooperHewitt-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 477EA29782F74B44939367E0 /* CooperHewitt-Book.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,17 +43,17 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = gigglify_rn/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = gigglify_rn/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-gigglify_rn-gigglify_rnTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-gigglify_rn-gigglify_rnTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A088993F3EA45E68533519A /* CooperHewitt-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "CooperHewitt-Medium.otf"; path = "../assets/fonts/CooperHewitt-Medium.otf"; sourceTree = "<group>"; };
+		2F8E077266224B72814F3DA9 /* CooperHewitt-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "CooperHewitt-Light.otf"; path = "../assets/fonts/CooperHewitt-Light.otf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-gigglify_rn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gigglify_rn.debug.xcconfig"; path = "Target Support Files/Pods-gigglify_rn/Pods-gigglify_rn.debug.xcconfig"; sourceTree = "<group>"; };
+		477EA29782F74B44939367E0 /* CooperHewitt-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "CooperHewitt-Book.otf"; path = "../assets/fonts/CooperHewitt-Book.otf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-gigglify_rn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gigglify_rn.release.xcconfig"; path = "Target Support Files/Pods-gigglify_rn/Pods-gigglify_rn.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-gigglify_rn-gigglify_rnTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gigglify_rn-gigglify_rnTests.debug.xcconfig"; path = "Target Support Files/Pods-gigglify_rn-gigglify_rnTests/Pods-gigglify_rn-gigglify_rnTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-gigglify_rn.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-gigglify_rn.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B2C046668EF41EC8CE01BEA /* CooperHewitt-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "CooperHewitt-Bold.otf"; path = "../assets/fonts/CooperHewitt-Bold.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = gigglify_rn/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-gigglify_rn-gigglify_rnTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gigglify_rn-gigglify_rnTests.release.xcconfig"; path = "Target Support Files/Pods-gigglify_rn-gigglify_rnTests/Pods-gigglify_rn-gigglify_rnTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		6B2C046668EF41EC8CE01BEA /* CooperHewitt-Bold.otf */ = {isa = PBXFileReference; name = "CooperHewitt-Bold.otf"; path = "../assets/fonts/CooperHewitt-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		477EA29782F74B44939367E0 /* CooperHewitt-Book.otf */ = {isa = PBXFileReference; name = "CooperHewitt-Book.otf"; path = "../assets/fonts/CooperHewitt-Book.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2F8E077266224B72814F3DA9 /* CooperHewitt-Light.otf */ = {isa = PBXFileReference; name = "CooperHewitt-Light.otf"; path = "../assets/fonts/CooperHewitt-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2A088993F3EA45E68533519A /* CooperHewitt-Medium.otf */ = {isa = PBXFileReference; name = "CooperHewitt-Medium.otf"; path = "../assets/fonts/CooperHewitt-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

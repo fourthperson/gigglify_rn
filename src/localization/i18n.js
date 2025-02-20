@@ -1,4 +1,4 @@
-import translationEN from './localization/en/translation.json';
+import translationEN from './en/translation.json';
 import * as Localization from 'react-native-localize';
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
