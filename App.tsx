@@ -13,6 +13,8 @@ import ErrorBoundary from 'react-native-error-boundary';
 import {I18nextProvider} from 'react-i18next';
 import i18n from './src/localization/i18n';
 import {readDateFormat} from './src/prefs/local_pref';
+import {Provider} from 'react-redux';
+import store from './src/store/store';
 
 const GigglifyApp = (): React.JSX.Element => {
   useEffect(() => {
@@ -21,11 +23,13 @@ const GigglifyApp = (): React.JSX.Element => {
 
   return (
     <ErrorBoundary onError={e => console.error(e)}>
-      <RealmProvider schema={[SavedJoke]}>
-        <I18nextProvider i18n={i18n}>
-          <GigglifyNavigator />
-        </I18nextProvider>
-      </RealmProvider>
+      <Provider store={store}>
+        <RealmProvider schema={[SavedJoke]}>
+          <I18nextProvider i18n={i18n}>
+            <GigglifyNavigator />
+          </I18nextProvider>
+        </RealmProvider>
+      </Provider>
     </ErrorBoundary>
   );
 };
