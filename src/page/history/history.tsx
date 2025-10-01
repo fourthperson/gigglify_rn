@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {blackColor, mediumFont} from '../../config/theme.ts';
 import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {useQuery} from '@realm/react';
@@ -9,6 +9,7 @@ import {SavedJoke} from '../../types/types.ts';
 import {useTranslation} from 'react-i18next';
 import {Joke} from '../../types/types.ts';
 import HistoryItem from '../../components/HistoryItem.tsx';
+import {FlashList} from '@shopify/flash-list';
 
 const HistorySheet = (): React.JSX.Element => {
   const {t} = useTranslation();
@@ -47,7 +48,7 @@ const HistorySheet = (): React.JSX.Element => {
   return (
     <BottomSheetScrollView style={styles.contentContainer}>
       <Text style={styles.titleStyle}>{t('history')}</Text>
-      <FlatList
+      <FlashList
         data={jokes}
         scrollEnabled={false}
         keyExtractor={item => item.time.toString()}

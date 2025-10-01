@@ -15,21 +15,26 @@ import i18n from './src/localization/i18n';
 import {readDateFormat} from './src/prefs/local_pref';
 import {Provider} from 'react-redux';
 import store from './src/store/store';
+import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 
 const GigglifyApp = (): React.JSX.Element => {
   useEffect(() => {
     readDateFormat().then();
   }, []);
 
+  const queryClient = new QueryClient();
+
   return (
     <ErrorBoundary onError={e => console.error(e)}>
-      <Provider store={store}>
-        <RealmProvider schema={[SavedJoke]}>
-          <I18nextProvider i18n={i18n}>
-            <GigglifyNavigator />
-          </I18nextProvider>
-        </RealmProvider>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        {/*<Provider store={store}>*/}
+          <RealmProvider schema={[SavedJoke]}>
+            <I18nextProvider i18n={i18n}>
+              <GigglifyNavigator />
+            </I18nextProvider>
+          </RealmProvider>
+        {/*</Provider>*/}
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 };

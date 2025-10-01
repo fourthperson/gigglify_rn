@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, {useRef, useCallback} from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -34,25 +34,23 @@ import {SavedJoke} from '../../types/types.ts';
 import {useTranslation} from 'react-i18next';
 import {Joke} from '../../types/types.ts';
 import {loadRoute} from '../../prefs/local_pref.ts';
+import {useQuery} from '@tanstack/react-query';
 
 const HomePage = (): React.JSX.Element => {
   const {t} = useTranslation();
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [joke, setJoke] = useState<Joke | null>(null);
 
   const realm = useRealm();
 
   const settingsModalRef = useRef<BottomSheetModal>(null);
   const historyModalRef = useRef<BottomSheetModal>(null);
 
-  const loadJoke = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const url: string = await loadRoute();
+  const {isLoading, data, refetch} = useQuery({
+    queryKey: ['jokeData'],
+    queryFn: async () => {
+      const url = await loadRoute();
       const response = await appAxios.get(url);
-      if (response.status !== 200 || response.data.error === true) {
-        return;
+      if (response.status !== 200) {
+        return null;
       }
 
       const j: Joke = {
@@ -63,14 +61,21 @@ const HomePage = (): React.JSX.Element => {
             ? response.data.setup + '\n\n' + response.data.delivery
             : response.data.joke,
       };
+      await saveJoke(j);
 
+      return j;
+    },
+  });
+
+  const saveJoke = useCallback(
+    async (joke: Joke) => {
       try {
         realm.write(() => {
           try {
             realm.create(SavedJoke.schema.name, {
-              time: j.time,
-              category: j.category,
-              content: j.content,
+              time: joke.time,
+              category: joke.category,
+              content: joke.content,
             });
           } catch (e) {
             console.error(e);
@@ -79,24 +84,61 @@ const HomePage = (): React.JSX.Element => {
       } catch (e) {
         console.error(e);
       }
+    },
+    [realm],
+  );
 
-      setJoke(j);
-    } catch (e) {
-      console.error(e);
-    }
-    setIsLoading(false);
-  }, [realm]);
+  // const loadJoke = useCallback(async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const url: string = await loadRoute();
+  //     const response = await appAxios.get(url);
+  //     if (response.status !== 200 || response.data.error === true) {
+  //       return;
+  //     }
+  //
+  //     const j: Joke = {
+  //       time: Date.now().toString(),
+  //       category: response.data.category,
+  //       content:
+  //         response.data.type === 'twopart'
+  //           ? response.data.setup + '\n\n' + response.data.delivery
+  //           : response.data.joke,
+  //     };
+  //
+  //     try {
+  //       realm.write(() => {
+  //         try {
+  //           realm.create(SavedJoke.schema.name, {
+  //             time: j.time,
+  //             category: j.category,
+  //             content: j.content,
+  //           });
+  //         } catch (e) {
+  //           console.error(e);
+  //         }
+  //       });
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //
+  //     setJoke(j);
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  //   setIsLoading(false);
+  // }, [realm]);
 
-  useEffect(() => {
-    loadJoke().then();
-  }, [loadJoke]);
+  // useEffect(() => {
+  //   loadJoke().then();
+  // }, [loadJoke]);
 
   const share = useCallback(() => {
-    if (joke === null) {
+    if (data == null) {
       return;
     }
-    shareText(joke.content);
-  }, [joke]);
+    shareText(data.content);
+  }, [data]);
 
   return (
     <BottomSheetModalProvider>
@@ -116,13 +158,15 @@ const HomePage = (): React.JSX.Element => {
             </View>
           ) : (
             <View style={styles.container}>
-              <TouchableOpacity style={styles.container} onPress={loadJoke}>
+              <TouchableOpacity
+                style={styles.container}
+                onPress={() => refetch()}>
                 <View style={styles.centeredItems}>
                   <Text style={styles.categoryText}>
-                    {joke === null ? '' : joke.category}
+                    {data == null ? '' : data.category}
                   </Text>
                   <Text style={styles.jokeText}>
-                    {joke === null ? t('usage_description1') : joke.content}
+                    {data == null ? t('usage_description1') : data.content}
                   </Text>
                 </View>
               </TouchableOpacity>
